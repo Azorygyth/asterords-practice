@@ -17,3 +17,12 @@ class CircleShape(pygame.sprite.Sprite):
 
     def update(self, dt):
         pass
+
+    def collided(self, circleShape):
+        
+        if self.position.distance_to(circleShape.position) <=  self.radius + circleShape.radius:
+            print("boolet?",self.position.distance_to(circleShape.position), self.radius, circleShape.radius)
+
+        if self.position.distance_to(circleShape.position) <=  self.radius + circleShape.radius:
+            return True
+        return False

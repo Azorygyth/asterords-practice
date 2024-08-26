@@ -1,6 +1,11 @@
+import sys
 import pygame
 from player import *
 from constants import *
+from asteroid import *
+from asteroidfield import *
+from shot import *
+import random
 
 
 def main():
@@ -16,8 +21,19 @@ def main():
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+    boolets = pygame.sprite.Group()
+
     Player.containers = (updatable, drawable)
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = (updatable)
+    Boolet.containers = (boolets, updatable, drawable)
+    
+
+
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    asteroidField = AsteroidField()
+    
 
     while True:
 
@@ -33,6 +49,21 @@ def main():
 
         for sprite in drawable.sprites():
             sprite.draw(screen)
+
+        for asteroid in asteroids.sprites():
+            if player.collided(asteroid):
+                print("Game over!")
+                sys.exit()
+
+        for asteroid in asteroids.sprites():
+            for boolet in boolets.sprites():
+                if boolet.collided(asteroid):
+                    boolet.kill()
+                    asteroid.split()
+                    
+                    
+                
+
         pygame.display.flip()
         dt = clock.tick(60) / 1000
        
